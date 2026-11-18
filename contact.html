@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact · Transceive</title>
+  <meta name="description" content="Contact Transceive.">
+  <link rel="icon" href="logo.png">
+  <style>
+    @font-face {
+      font-family: "Exo 2"; font-style: normal; font-weight: 600; font-display: swap;
+      src: url("exo2-600.woff2") format("woff2");
+    }
+    :root { --bg: #0b1220; --text: #f3f4f6; --muted: #9ca3af; --line: #1f2937; --field: #111a2e; --accent: #22d3ee; --error: #f87171; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      display: flex; flex-direction: column;
+    }
+    main {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      max-width: 720px; width: 100%; margin: 0 auto; padding: 48px 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; color: inherit; text-decoration: none; }
+    .brand img { width: 56px; height: auto; flex: none; }
+    .brand span { font-family: "Exo 2", system-ui, sans-serif; font-size: 30px; font-weight: 600; }
+    h1 { font-size: 22px; font-weight: 600; margin: 40px 0 20px; }
+    form { display: grid; gap: 16px; max-width: 520px; }
+    label { display: grid; gap: 6px; font-size: 14px; color: var(--muted); }
+    input, textarea {
+      width: 100%; font: inherit; color: var(--text); background: var(--field);
+      border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+    }
+    textarea { min-height: 160px; resize: vertical; }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+    button {
+      justify-self: start; font: inherit; font-weight: 600; color: #0b1220; background: var(--accent);
+      border: 0; border-radius: 8px; padding: 10px 22px; cursor: pointer;
+    }
+    button:disabled { opacity: .6; cursor: default; }
+    .status { min-height: 1.6em; margin: 0; font-size: 15px; }
+    .status.error { color: var(--error); }
+    .status.ok { color: var(--accent); }
+    footer {
+      max-width: 720px; width: 100%; margin: 0 auto; padding: 16px;
+      border-top: 1px solid var(--line); color: var(--muted); font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="brand" href="./">
+      <img src="logo.png" alt="Transceive logo">
+      <span>Transceive</span>
+    </a>
+
+    <h1>Contact</h1>
+
+    <form id="contact" novalidate>
+      <label>Name
+        <input name="name" type="text" autocomplete="name" maxlength="200" required>
+      </label>
+      <label>Email
+        <input name="email" type="email" autocomplete="email" maxlength="200" required>
+      </label>
+      <label>Message
+        <textarea name="message" maxlength="5000" required></textarea>
+      </label>
+      <!-- Spam trap: hidden from people, bots fill it in -->
+      <label class="hp" aria-hidden="true">Website
+        <input name="website" type="text" tabindex="-1" autocomplete="off">
+      </label>
+      <button type="submit">Send</button>
+      <p class="status" id="status" role="status"></p>
+    </form>
+  </main>
+  <footer>&copy; 2026 Transceive Company SRL</footer>
+
+  <script>
+    // Google Apps Script web app URL (not an email address)
+    const SCRIPT_URL = 'PASTE_WEB_APP_URL_HERE';
+
+    const form = document.getElementById('contact');
+    const status = document.getElementById('status');
+    const button = form.querySelector('button');
+    const openedAt = Date.now();
+
+    function show(text, kind) {
+      status.textContent = text;
+      status.className = 'status ' + (kind || '');
+    }
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const data = new FormData(form);
+      const email = String(data.get('email') || '').trim();
+      if (!String(data.get('name') || '').trim() || !String(data.get('message') || '').trim()
+          || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        show('Please fill in all fields with a valid email address.', 'error');
+        return;
+      }
+      data.append('t', String(openedAt));
+
+      button.disabled = true;
+      show('Sending…');
+      try {
+        const res = await fetch(SCRIPT_URL, { method: 'POST', body: new URLSearchParams(data) });
+        const json = await res.json();
+        if (json.ok) {
+          form.reset();
+          show('Thank you, your message has been sent.', 'ok');
+        } else {
+          show(json.error || 'Something went wrong. Please try again later.', 'error');
+        }
+      } catch (_) {
+        show('Something went wrong. Please try again later.', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
