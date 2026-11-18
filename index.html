@@ -3,45 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Transceive Company SRL</title>
-  <meta name="description" content="Transceive Company SRL, Bucharest, Romania.">
+  <title>Transceive</title>
+  <meta name="description" content="Management consulting expertise spanning multiple industries and business functions.">
+  <link rel="icon" href="logo.png">
   <style>
-    :root { --text: #1f2937; --muted: #6b7280; --line: #e5e7eb; --bg: #ffffff; --accent: #e11d48; }
-    @media (prefers-color-scheme: dark) {
-      :root { --text: #f3f4f6; --muted: #9ca3af; --line: #374151; --bg: #111827; }
+    @font-face {
+      font-family: "Exo 2"; font-style: normal; font-weight: 600; font-display: swap;
+      src: url("exo2-600.woff2") format("woff2");
     }
+    :root { --bg: #0b1220; --text: #f3f4f6; --muted: #9ca3af; --line: #1f2937; }
     * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0; background: var(--bg); color: var(--text);
       font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      display: flex; flex-direction: column;
     }
-    main { max-width: 640px; margin: 0 auto; padding: 64px 16px; }
-    h1 { font-size: 28px; margin: 0 0 8px; }
-    .tag { color: var(--muted); margin: 0 0 40px; }
-    h2 { font-size: 14px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 32px 0 8px; }
-    p { margin: 0 0 8px; }
-    a { color: var(--accent); }
-    footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    main {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      max-width: 720px; width: 100%; margin: 0 auto; padding: 48px 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 20px; }
+    .brand img { width: 88px; height: auto; flex: none; }
+    h1 { font-family: "Exo 2", system-ui, sans-serif; font-size: 48px; font-weight: 600; letter-spacing: .01em; margin: 0; }
+    .tagline { color: var(--muted); font-size: 18px; margin: 24px 0 0; }
+    footer {
+      max-width: 720px; width: 100%; margin: 0 auto; padding: 16px;
+      border-top: 1px solid var(--line); color: var(--muted); font-size: 14px;
+    }
+    @media (max-width: 480px) {
+      .brand img { width: 64px; }
+      h1 { font-size: 34px; }
+      .tagline { font-size: 16px; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <h1>Transceive Company SRL</h1>
-    <p class="tag">[ONE LINE: what the company does, e.g. "Ice cream and crêpe stores in Romania."]</p>
-
-    <h2>About</h2>
-    <p>[TWO OR THREE SENTENCES about the business: what you sell, where, since when.]</p>
-
-    <h2>Company details</h2>
-    <p>Transceive Company SRL</p>
-    <p>Registration no.: [J40/.../....]</p>
-    <p>CUI: [RO........]</p>
-    <p>[STREET AND NUMBER], [CITY] [POSTAL CODE], Romania</p>
-
-    <h2>Contact</h2>
-    <p><a href="mailto:[EMAIL]@transceive.eu">[EMAIL]@transceive.eu</a></p>
-
-    <footer>&copy; 2026 Transceive Company SRL</footer>
+    <div class="brand">
+      <img src="logo.png" alt="Transceive logo">
+      <h1>Transceive</h1>
+    </div>
+    <p class="tagline">Management consulting expertise spanning multiple industries and business functions.</p>
   </main>
+  <footer>&copy; 2026 Transceive Company SRL</footer>
 </body>
 </html>
